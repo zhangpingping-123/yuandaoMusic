@@ -1,0 +1,215 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-image: url("/images/bg.jpg");
+}
+.hidden {
+  display: none;
+}
+.show {
+  display: block;
+}
+#app .mymusic {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+#app .mymusic .music-box {
+  width: 800px;
+  height: 538px;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+#app .mymusic .music-box .header {
+  width: 100%;
+  height: 10%;
+  background-color: black;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#app .mymusic .music-box .header input {
+  width: 300px;
+  height: 30px;
+  background-image: url(../images/zoom.png);
+  background-repeat: no-repeat;
+  background-position: 270px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+  outline-style: none;
+}
+#app .mymusic .music-box .music-content {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  font-size: 14px;
+  background-color: rgba(207, 203, 182, 0.5);
+}
+#app .mymusic .music-box .music-content .left {
+  flex: 3;
+}
+#app .mymusic .music-box .music-content .left .songs-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+}
+#app .mymusic .music-box .music-content .left .songs-list .song-item {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#app .mymusic .music-box .music-content .left .songs-list .song-item .song-item-audio {
+  width: 25px;
+  height: 25px;
+  background: url(../images/table.png) -18px -18px;
+}
+#app .mymusic .music-box .music-content .left .songs-list .song-item .song-item-name {
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#app .mymusic .music-box .music-content .left .songs-list .song-item .song-item-mv {
+  width: 30px;
+  height: 20px;
+  background: url(../images/table.png) left -45px;
+}
+#app .mymusic .music-box .music-content .left .songs-list .song-item:nth-child(odd) {
+  background-color: rgba(207, 203, 182, 0.5);
+}
+#app .mymusic .music-box .music-content .left .songs-list::-webkit-scrollbar {
+  display: none;
+}
+#app .mymusic .music-box .music-content .middle {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+@keyframes running {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+#app .mymusic .music-box .music-content .middle .player_bar {
+  position: absolute;
+  transform: rotate(-25deg);
+  transform-origin: 12px 12px;
+  transition: all 2s;
+  z-index: 3;
+}
+#app .mymusic .music-box .music-content .middle .paytingSong {
+  transform: rotate(0);
+}
+#app .mymusic .music-box .music-content .middle .music-img {
+  width: 250px;
+  height: 250px;
+  top: 100px;
+  position: relative;
+}
+#app .mymusic .music-box .music-content .middle .music-img .disc {
+  width: 250px;
+  position: absolute;
+  z-index: 2;
+}
+#app .mymusic .music-box .music-content .middle .music-img .autorotate {
+  animation-name: running;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+#app .mymusic .music-box .music-content .middle .music-img .cover {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  top: 55px;
+  left: 55px;
+  z-index: 1;
+}
+#app .mymusic .music-box .music-content .right {
+  padding: 5px;
+  flex: 3;
+}
+#app .mymusic .music-box .music-content .right .top-comments {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item {
+  display: flex;
+  padding: 10px;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item .imagesWrapper {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item .imagesWrapper img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item .content {
+  width: 200px;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item .content .nickname {
+  font-size: 16px;
+  color: black;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#app .mymusic .music-box .music-content .right .top-comments .comments-item .content .text {
+  text-align: justify;
+}
+#app .mymusic .music-box .music-content .right .top-comments::-webkit-scrollbar {
+  display: none;
+}
+#app .mymusic .bottom {
+  width: 100%;
+  height: 10%;
+  background-color: white;
+}
+#app .mymusic .bottom audio {
+  width: 100%;
+  height: 100%;
+}
+#app .mymusic .bottom .vedio-box {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+#app .mymusic .bottom .vedio-box .vedio-close {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+}
+#app .mymusic .bottom .vedio-box video {
+  width: 800px;
+  height: 500px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#app .mymusic .bottom .vedio-box .video-mask {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}

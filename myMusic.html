@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>远道音乐</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div id="app">
+        <div class="mymusic">
+            <div class="music-box">
+                <!-- 顶部开始 -->
+                <header class="header">
+                    <div class="left">
+                        远道音乐
+                    </div>
+                    <input type="text" v-model="keywords" @keyup.enter.stop="searchSongs">
+                </header>
+                <!-- 顶部结束 -->
+                <!-- 中间歌单开始 -->
+                <div class="music-content">
+                    <div class="left">                       
+                        <div class="songs-list" >
+                            <div class="song-item" v-for="song,index in songs">
+                                <div class="song-item-audio" @click="playAudio(song.id)"></div>
+                                <div class="song-item-name" :title='song.name'>{{song.name}}</div>
+                                <div :class="['song-item-mv',{hidden:song.mvid==0}]" @click="playMv(song.mvid)"></div>
+                            </div>                           
+                        </div>
+                    </div>
+                    <img src="./images/line.png">
+                    <div class="middle">
+                            <img :class="['player_bar',{paytingSong:isAudioPlaying}]" src="./images/player_bar.png" alt="">
+                        <div class="music-img">
+                            <img :class="['disc',{autorotate:isAudioPlaying}]" src="./images/disc.png" alt="">
+                            <img class="cover" :src="coverUrl===''?'./images/cover.png':coverUrl" alt="">
+                        </div>
+                    </div>
+                    <img src="./images/line.png">
+                    <div class="right">
+                        <div class="title">热门留言</div>
+                        <div class="top-comments">
+                            <div class="comments-item" v-for="comment,index in hotComments" :key="index">
+                                <div class="imagesWrapper">
+                                    <img :src="comment.user.avatarUrl" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="nickname">{{comment.user.nickname}}</div>
+                                    <p class="text">{{comment.content}}</p>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 中间歌单结束 -->
+                <!-- 底部进度条开始 -->
+                <div class="bottom">
+                    <audio :src="musicUrl" @pause="pause" ref="audio" @play="play"
+                    controls
+                    autoplay
+                    loop
+                    ></audio>
+                    <div class="vedio-box" v-show="isVedioPlaying">
+                        <div class="vedio-close" @click="vedioClose">X</div>
+                        <video ref="vedio" :src="vedioUrl" controls autoplay loop></video>
+                        <div class="video-mask"></div>
+                    </div>
+
+                </div>
+                <!-- 底部进度条结束 -->
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./node_modules/vue/dist/vue.js"></script>
+<script src="./node_modules/axios/dist/axios.js"></script>
+<script src="./js/common.js"></script>
+<script>
+    let app = new Vue({
+        el:"#app",
+        data:{
+            keywords:"热门",
+            songs:[],
+            musicUrl:"",//歌曲的地址
+            coverUrl:"", //封面的地址
+            vedioUrl:"",
+            isVedioPlaying:false,
+            isAudioPlaying:false,
+            hotComments:[], //热门评论
+        },
+        mounted() {
+            Axios.get("/search",{
+                params:{
+                    keywords:this.keywords
+                }
+            }).then((res)=>{
+                // console.log(res)
+                this.songs = res.result.songs;
+                this.isAudioPlaying = true;
+                let id = this.songs[0].id;
+                // 获取歌曲
+                Axios.get("/song/url",{
+                    params:{
+                        id:id
+                    }
+                }).then((res)=>{
+                    // console.log(res)
+                    this.musicUrl = res.data[0].url
+                })
+                //获取封面
+                Axios.get("/song/detail",{
+                    params:{
+                        ids:id
+                    }
+                }).then((res)=>{
+                    console.log(res)
+                    this.coverUrl = res.songs[0].al.picUrl
+                })
+                //获取评论
+                Axios.get("/comment/hot?type=0",{
+                    params:{
+                        id:id
+                    }
+                }).then((res)=>{
+                    console.log(res)
+                    this.hotComments = res.hotComments
+                })
+            })
+        },
+        methods: {
+            play:function(){
+                this.isAudioPlaying = true;
+            },
+            pause:function(){
+                this.isAudioPlaying=false;
+            },
+            //关闭mv
+            vedioClose:function(){
+                this.$refs.vedio.pause()
+                this.isVedioPlaying = false
+            },
+            //播放mv  ,点击播放mv按钮后才发生的事件
+            playMv:function(mvid){
+                Axios.get("/mv/url",{
+                    params:{
+                        id:mvid
+                    }
+                }).then((res)=>{
+                    console.log(res)
+                    this.vedioUrl = res.data.url;
+                    this.isAudioPlaying = false;
+                    this.$refs.audio.pause();
+                    this.isVedioPlaying = true;
+                })
+            },
+            searchSongs:function(){
+                //初始化时加载默认的歌曲数据
+                Axios.get("/search",{
+                    params:{
+                        keywords:this.keywords
+                    }
+                }).then((res)=>{
+                    this.songs = res.result.songs;
+                })
+            },
+            //点击播放按钮后发生的事件
+            playAudio:function(id){
+                this.isAudioPlaying = true;
+                //获取歌曲
+                Axios.get("/song/url",{
+                    params:{
+                        id:id
+                    }
+                }).then((res)=>{
+                    this.musicUrl = res.data[0].url
+                })
+                //获取封面
+                Axios.get("/song/detail",{
+                    params:{
+                        ids:id
+                    }
+                }).then((res)=>{
+                    console.log(res)
+                    this.coverUrl = res.songs[0].al.picUrl
+                })
+                //获取评论
+                Axios.get("/comment/hot?type=0",{
+                    params:{
+                        id:id
+                    }
+                }).then((res)=>{
+                    console.log(res)
+                    this.hotComments = res.hotComments
+
+                })
+            }
+        },
+    })
+</script>
+</html>
