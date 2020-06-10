@@ -15,8 +15,14 @@
                     <div class="left">
                         远道音乐
                     </div>
-                    <input type="text" v-model="keywords" @keyup.enter.stop="searchSongs">
+                    <div class="right">
+                        <input type="text" v-model="keywords" @keyup.enter.stop="searchSongs">
+                    </div>                   
                 </header>
+                    <div class="search-record ">
+                        <div class="search-record-item" v-for="record,index in searchRecord" :key="index" @click.stop="addRecord(record)">{{record}}</div>
+                    </div>
+                
                 <!-- 顶部结束 -->
                 <!-- 中间歌单开始 -->
                 <div class="music-content">
@@ -69,6 +75,11 @@
 
                 </div>
                 <!-- 底部进度条结束 -->
+                <!--遮罩开始 -->
+                <div :class="['loading',{hidden:!isLoading}]">
+                    <img src="./images/timg.gif" alt="">
+                </div>
+                <!-- 遮罩结束 -->
             </div>
         </div>
     </div>
@@ -80,7 +91,7 @@
     let app = new Vue({
         el:"#app",
         data:{
-            keywords:"热门",
+            keywords:"周震南",
             songs:[],
             musicUrl:"",//歌曲的地址
             coverUrl:"", //封面的地址
@@ -88,6 +99,9 @@
             isVedioPlaying:false,
             isAudioPlaying:false,
             hotComments:[], //热门评论
+            searchRecord:[],//搜索记录
+            isLoading:true,//遮罩
+
         },
         mounted() {
             Axios.get("/search",{
@@ -129,6 +143,10 @@
             })
         },
         methods: {
+            //
+            // addRecord:function(record){
+                
+            // },
             play:function(){
                 this.isAudioPlaying = true;
             },
@@ -156,6 +174,8 @@
             },
             searchSongs:function(){
                 //初始化时加载默认的歌曲数据
+                this.searchRecord.push(this.keywords)
+                console.log(this.searchRecord)
                 Axios.get("/search",{
                     params:{
                         keywords:this.keywords

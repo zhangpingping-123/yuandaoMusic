@@ -20,6 +20,7 @@ body{
       width: 800px;
       height: 538px;
       color: white;
+      position: relative;
       font-family: Georgia, 'Times New Roman', Times, serif;
       // 顶部样式开始
       .header {
@@ -45,6 +46,23 @@ body{
   
       }
       //顶部样式结束
+      .search-record{
+        position: absolute;
+        width: 300px;
+        top:45px;
+        right: 16px;
+        background-color:rgba(207, 203, 182, .3);
+        border-radius: 10px;
+        .search-record-item {
+          color: black;
+          border: 1px solid skyblue;
+          border-radius: 10px;
+          width: 300px;
+          height: 30px;
+          line-height: 30px;
+          padding: 0 16px;
+        }
+      }
       //中间样式开始
       .music-content {
         width: 100%;
@@ -232,5 +250,24 @@ body{
       }
     }
     //底部样式结束
+    //遮罩样式开始
+    .loading {
+      position: fixed;
+      top:0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
+      img {
+        position: fixed;
+        width: 250px;
+        height: 250px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border-radius: 50%;
+      }
+    }
+    //遮罩样式结束
     }
 }

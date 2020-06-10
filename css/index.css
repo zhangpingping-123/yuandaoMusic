@@ -22,6 +22,7 @@ body {
   width: 800px;
   height: 538px;
   color: white;
+  position: relative;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 #app .mymusic .music-box .header {
@@ -43,6 +44,23 @@ body {
   padding: 15px;
   border-radius: 15px;
   outline-style: none;
+}
+#app .mymusic .music-box .search-record {
+  position: absolute;
+  width: 300px;
+  top: 45px;
+  right: 16px;
+  background-color: rgba(207, 203, 182, 0.3);
+  border-radius: 10px;
+}
+#app .mymusic .music-box .search-record .search-record-item {
+  color: black;
+  border: 1px solid skyblue;
+  border-radius: 10px;
+  width: 300px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 16px;
 }
 #app .mymusic .music-box .music-content {
   width: 100%;
@@ -212,4 +230,21 @@ body {
   width: 100%;
   height: 100%;
   background-color: black;
+}
+#app .mymusic .loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+#app .mymusic .loading img {
+  position: fixed;
+  width: 250px;
+  height: 250px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
 }
